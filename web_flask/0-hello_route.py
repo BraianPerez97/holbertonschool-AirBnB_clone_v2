@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/', strict_slashes=False)
 def hello_hbnd():
     """Function that prints string"""
-    return "Hello HBND!"
+    return "Hello HBNB!"
 
 
 if __name__ == "__main__":
