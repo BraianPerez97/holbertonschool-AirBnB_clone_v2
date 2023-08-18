@@ -53,7 +53,8 @@ def is_odd_or_even(n):
     """route that evaluates if n is odd or even"""
     if type(n) is int:
         if n % 2 == 0:
-            return render_template('6-number_odd_or_even.html', number=n, text='odd')
+            return render_template('6-number_odd_or_even.html',
+                                   number=n, text='odd')
     else:
         raise TypeError
 
