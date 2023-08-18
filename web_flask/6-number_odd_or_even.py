@@ -35,7 +35,9 @@ def python_cool(text="is cool"):
 def int_n(n):
     """print int"""
     if type(n) is int:
-        return "{} is a number".format(n)
+        return f"{n} is a number"
+    else:
+        raise TypeError
 
 
 @app.route('/number_template/<int:n>')
