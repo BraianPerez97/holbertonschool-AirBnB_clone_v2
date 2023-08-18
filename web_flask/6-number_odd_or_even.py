@@ -39,9 +39,10 @@ def int_n(n):
 
 
 @app.route('/number_template/<int:n>')
-def number_template(n):
+def html(n):
     """print html"""
-    return render_template('5-number.html', n=n)
+    if type(n) is int:
+        return render_template('5-number.html', n=n)
 
 
 @app.route('/number_odd_or_even/<int:n>')
