@@ -35,26 +35,19 @@ def python_cool(text="is cool"):
 def int_n(n):
     """print int"""
     if type(n) is int:
-        return f"{n} is a number"
-    else:
-        raise TypeError
+        return "{} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>')
-def html(n):
+def number_template(n):
     """print html"""
-    if type(n) is int:
-        return render_template('5-number.html', n=n)
+    return render_template('5-number.html', n=n)
 
 
 @app.route('/number_odd_or_even/<int:n>')
 def is_odd_or_even(n):
     """route that evaluates if n is odd or even"""
-    if type(n) is int:
-        if n % 2 == 0:
-            return render_template('6-number_odd_or_even.html', n=n)
-    else:
-        raise TypeError
+    is_odd_or_even = "odd" if n % 2 != 0 else "even"
 
 
 if __name__ == "__main__":
