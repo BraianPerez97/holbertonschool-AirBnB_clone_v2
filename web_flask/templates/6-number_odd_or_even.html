@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Number: {{ n }} is {{ even }}</h1>
+    <H1>Number: {{ n }} is {% if n % 2 == 0 %}even{% else %}odd{% endif %}</H1>
 </body>
 
 </html>
