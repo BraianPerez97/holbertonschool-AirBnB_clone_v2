@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+
 """ This module defines a class that manages database storage fro hbnb clone"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import os
+import models
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
@@ -25,53 +28,63 @@ class DBStorage:
     """
     __engine = None
     __session = None
-    __classes = [Amenity, City, Place, Review, State, User]
+    __classes = {"BaseModel": BaseModel, "Amenity": Amenity, "City": City,
+                 "Place": Place, "Review": Review, "State": State, "User": User}
 
     def __init__(self):
         """ Constructor for the class DBStorage """
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(username, passwd, host, db), pool_pre_ping=True)
 
-    if env == 'test':
-        Base.MetaData.drop_all()
+        if env == 'test':
+            Base.MetaData.drop_all(self.__engine)
 
     def all(self, cls=None):
         """ Returns objects in dictionary format """
         dict = {}
         if cls in self.__classes:
-            results = DBStorage.__session.query(cls)
+            results = self.__session.query(cls).all()
             for result in results:
                 key = "{}.{}".format(result.__class__.__name__, result.id)
                 dict[key] = result
-
-        if cls is None:
-            for cls in self.__classes__:
-                results = DBStorage.__session.query(cls)
-                for result in results:
-                    key = "{}:{}".format(result.__class__.__name__, result.id)
-                    dict[key] = result
-
         return dict
 
     def new(self, obj):
         """ Adds new object to current db session """
-        DBStorage.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """ Commits all changes of current db session """
-        DBStorage.__session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """ Deletes from current db session if not none """
-        DBStorage.__session.delete(obj)
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def get(self, cls, id):
+        """ Retrieves class obj"""
+        if type(cls) == str:
+            cls = self.__classes.get(cls)
+        if cls is None:
+            return None
+        return self.__session.query(cls).filter(cls.id == id).first()
+
+    def count(self, cls=None):
+        """Count the number of objects in storage"""
+        if type(cls) is str:
+            cls = self.__classes.get(cls)
+        if cls is None:
+            return len(self.all())
+        return len(self.all(cls))
 
     def reload(self):
         """ Creates current db session """
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(bind=self.engine, expire_on_commit=False)
         Session = scoped_session(session)
-        DBStorage.__session = Session()
+        self.__session = Session
 
     def close(self):
         """ Close Session """
-        DBStorage.__session.close()
+        self.__session.remove()
