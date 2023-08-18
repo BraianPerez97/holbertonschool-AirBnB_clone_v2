@@ -14,10 +14,11 @@ def hello():
 
 @app.route("/hbnb", strict_slashes=False)
 def hello_hbnb():
-    return ("HBNB")
+    """Return HBNB"""
+    return ('HBNB')
 
 
-@app.route("/c/<tetx>", strict_slashes=False)
+@app.route("/c/<text>", strict_slashes=False)
 def c_fun(text):
     """returns c variable"""
     return "C " + text.replace('_', " ")
