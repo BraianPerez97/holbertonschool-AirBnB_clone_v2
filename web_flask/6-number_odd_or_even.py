@@ -54,9 +54,11 @@ def odd_or_even(n):
     if type(n) is int:
         if type(n) is int:
             if n % 2 == 0:
-                return render_template('6-number_odd_or_even.hmtl', n=n, text='odd')
-    else:
-        raise TypeError
+                even = 'even'
+            else:
+                even = 'odd'
+
+            return render_template('6-number_odd_or_even.hmtl', n=n, even=even)
 
 
 if __name__ == "__main__":
