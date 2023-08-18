@@ -48,8 +48,7 @@ def number_template(n):
 
 @app.route('/number_odd_or_even/<int:n>')
 def number_odd_or_even(n):
-    """
-    Display an HTML page with a header tag displaying
+    """ Display an HTML page with a header tag displaying
     "Number: n is even|odd" """
     if isinstance(n, int):
         even_or_odd = "odd" if n % 2 != 0 else "even"
